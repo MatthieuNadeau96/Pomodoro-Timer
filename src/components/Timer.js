@@ -4,7 +4,7 @@ class Timer extends Component {
 
   state = {
     count: 25,
-
+    counting: false,
     workTime: true,
     breakTime: false,
     bigBreakTime: false
@@ -12,14 +12,27 @@ class Timer extends Component {
 
 
   render() {
-    const {count, workTime} = this.state
+    const {count, counting, workTime} = this.state
     return (
       <div>
+        <p className="workPlayIcon"> { workTime ? <i class="fas fa-briefcase"/> : <i class="fas fa-coffee"/>} </p>
         <h1 className="counter">{count}</h1>
-        <p className="workPlayIcon"> { workTime ? <i class="fas fa-briefcase"></i> : <i class="fas fa-coffee"></i>} </p>
-        <button className="play actionBtn" onClick={this.startTimer}><i class="fas fa-play"></i></button>
-        <button className="pause actionBtn" onClick={this.pauseTimer}><i class="fas fa-pause"></i></button>
-        <button className="stop actionBtn" onClick={this.stopTimer}><i class="fas fa-stop"></i></button>
+
+        <button className="skip actionBtn"><i class="fas fa-step-forward"/></button>
+        {
+          counting ?
+          <button
+            className="play actionBtn"
+            onClick={this.pauseTimer}>
+            <i class="fas fa-pause"/>
+          </button>
+            : <button 
+                className="play actionBtn"
+                onClick={this.startTimer}>
+                <i class="fas fa-play"/>
+              </button>
+        }
+        <button className="stop actionBtn" onClick={this.stopTimer}><i class="fas fa-stop"/></button>
       </div>
     );
   }
@@ -28,6 +41,8 @@ class Timer extends Component {
   startTimer = () => {
     const {workTimer, breakTimer, bigBreakTimer} = this.props
     const {workTime, breakTime, bigBreakTime} = this.state
+
+    this.setState({counting: true})
 
     if(workTime) {
       this.setState({ count: workTimer })
@@ -76,6 +91,7 @@ class Timer extends Component {
 
   pauseTimer = () => {
     clearInterval(this.myInterval);
+    this.setState({counting: false})
   }
 
   stopTimer = () => {
@@ -87,6 +103,7 @@ class Timer extends Component {
   }
   componentWillUnmount() {
     clearInterval(this.myInterval);
+    this.setState({counting: false})
   }
 
 }
