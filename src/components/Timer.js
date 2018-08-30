@@ -74,12 +74,12 @@ class Timer extends Component {
       }, 1000)
     }
     else if (bigBreakTime) {
-      this.setState({ count: bigBreakTimer, setTimer: bigBreakTimer, count: workTimer })
+      this.setState({ count: bigBreakTimer, setTimer: bigBreakTimer })
       this.myInterval = setInterval(() => {
         if(this.state.count === 0) {
           // ding alarm
           this.pauseTimer();
-          this.setState({bigBreakTime: false, workTime: true})
+          this.setState({bigBreakTime: false, workTime: true, count: workTimer })
         } else {
           this.setState( prevState => ({
             count: prevState.count - 1
