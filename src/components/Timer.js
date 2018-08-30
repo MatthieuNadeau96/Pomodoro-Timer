@@ -43,8 +43,7 @@ class Timer extends Component {
   }
 
   timerCountDown = () => {
-    const { progressBarCountdown, count, counting } = this.state
-    // this.setState({progressBarCountdown: count})
+    const { count } = this.state
     this.progress = setInterval(() => {
       if (count <= 0) {
         clearInterval(this.progress);
@@ -57,7 +56,7 @@ class Timer extends Component {
   }
 
   // TODO: I have to fix the way startTimer interacts with pauseTimer
-    // as of right now when I press play after pausing, the timer resets back to what is set inside the if conditions below 
+    // as of right now when I press play after pausing, the timer resets back to what is set inside the if conditions below
 
   startTimer = () => {
     const {workTimer, breakTimer, bigBreakTimer} = this.props
@@ -131,8 +130,8 @@ class Timer extends Component {
   }
 
   skipTimer = () => {
-    const {workTimer, breakTimer, bigBreakTimer} = this.props
-    const {workTime, count, setTimer, breakTime, bigBreakTime} = this.state
+    const {workTimer, bigBreakTimer} = this.props
+    const {workTime, breakTime, bigBreakTime} = this.state
 
     if(workTime) {
       this.setState({count: 5, setTimer: 5, workTime: false, breakTime: true, progressBarCountdown: 100 })
