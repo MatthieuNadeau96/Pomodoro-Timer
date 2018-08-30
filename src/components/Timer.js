@@ -3,7 +3,11 @@ import React, { Component } from 'react';
 class Timer extends Component {
 
   state = {
-    count: 25
+    count: 5,
+
+    workTime: true,
+    breakTime: false,
+    bigBreakTime: false
   }
 
 
@@ -12,26 +16,62 @@ class Timer extends Component {
     return (
       <div>
         <h1>Current Count: {count}</h1>
-        <button onClick={this.startTimer}>Start</button>
         <button onClick={this.pauseTimer}>Pause</button>
+        <button onClick={this.startTimer}>Start</button>
         <button onClick={this.stopTimer}>Stop</button>
       </div>
     );
   }
 
-  componentDidMount () {
-    const {startCount} = this.props
-    this.setState({
-      count: startCount
-    })
-  }
 
   startTimer = () => {
-    this.myInterval = setInterval(() => {
-      this.setState( prevState => ({
-        count: prevState.count - 1
-      }))
-    }, 1000)
+    const {workTimer, breakTimer, bigBreakTimer} = this.props
+    const {workTime, breakTime, bigBreakTime} = this.state
+    if(workTime) {
+      this.setState({ count: workTimer })
+
+      this.myInterval = setInterval(() => {
+        if(this.state.count === 0) {
+          // ding alarm
+          this.pauseTimer();
+          this.setState({breakTime: true, workTime: false})
+        } else {
+          this.setState( prevState => ({
+            count: prevState.count - 1
+          }))
+        }
+      }, 1000)
+
+    } else if (breakTime) {
+      this.setState({ count: breakTimer })
+
+      this.myInterval = setInterval(() => {
+        if(this.state.count === 0) {
+          // ding alarm
+          this.pauseTimer();
+          this.setState({breakTime: false, bigBreakTime: true})
+        } else {
+          this.setState( prevState => ({
+            count: prevState.count - 1
+          }))
+        }
+      }, 1000)
+    } else if (bigBreakTime) {
+      this.setState({ count: bigBreakTimer })
+
+      this.myInterval = setInterval(() => {
+        if(this.state.count === 0) {
+          // ding alarm
+          this.pauseTimer();
+          this.setState({bigBreakTime: false, workTime: true})
+        } else {
+          this.setState( prevState => ({
+            count: prevState.count - 1
+          }))
+        }
+      }, 1000)
+    }
+
   }
 
   pauseTimer = () => {
@@ -39,9 +79,9 @@ class Timer extends Component {
   }
 
   stopTimer = () => {
-    const {startCount} = this.props
+    const {workTimer} = this.props
     this.setState({
-      count: startCount
+      count: workTimer
     })
     this.pauseTimer()
   }

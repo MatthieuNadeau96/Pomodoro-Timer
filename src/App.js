@@ -7,7 +7,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Timer startCount={'50'}/>
+        <Timer workTimer={'25'} breakTimer={'5'} bigBreakTimer={'30'}/>
       </div>
     );
   }
