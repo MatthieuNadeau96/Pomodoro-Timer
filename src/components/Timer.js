@@ -5,6 +5,7 @@ class Timer extends Component {
   state = {
     count: 25,
     counting: false,
+    setTimer: undefined,
     workTime: true,
     breakTime: false,
     bigBreakTime: false
@@ -15,24 +16,24 @@ class Timer extends Component {
     const {count, counting, workTime} = this.state
     return (
       <div>
-        <p className="workPlayIcon"> { workTime ? <i class="fas fa-briefcase"/> : <i class="fas fa-coffee"/>} </p>
+        <p className="workPlayIcon"> { workTime ? <i className="fas fa-briefcase"/> : <i className="fas fa-coffee"/>} </p>
         <h1 className="counter">{count}</h1>
 
-        <button className="skip actionBtn"><i class="fas fa-step-forward"/></button>
+        <button className="skip actionBtn" onClick={this.skipTimer}><i className="fas fa-step-forward"/></button>
         {
           counting ?
           <button
             className="play actionBtn"
             onClick={this.pauseTimer}>
-            <i class="fas fa-pause"/>
+            <i className="fas fa-pause"/>
           </button>
-            : <button 
+            : <button
                 className="play actionBtn"
                 onClick={this.startTimer}>
-                <i class="fas fa-play"/>
+                <i className="fas fa-play"/>
               </button>
         }
-        <button className="stop actionBtn" onClick={this.stopTimer}><i class="fas fa-stop"/></button>
+        <button className="stop actionBtn" onClick={this.stopTimer}><i className="fas fa-stop"/></button>
       </div>
     );
   }
@@ -45,7 +46,7 @@ class Timer extends Component {
     this.setState({counting: true})
 
     if(workTime) {
-      this.setState({ count: workTimer })
+      this.setState({ count: workTimer, setTimer: workTimer })
       this.myInterval = setInterval(() => {
         if(this.state.count === 0) {
           // ding alarm
@@ -59,7 +60,7 @@ class Timer extends Component {
       }, 1000)
     }
     else if (breakTime) {
-      this.setState({ count: breakTimer })
+      this.setState({ count: breakTimer, setTimer: breakTimer })
       this.myInterval = setInterval(() => {
         if(this.state.count === 0) {
           // ding alarm
@@ -73,7 +74,7 @@ class Timer extends Component {
       }, 1000)
     }
     else if (bigBreakTime) {
-      this.setState({ count: bigBreakTimer })
+      this.setState({ count: bigBreakTimer, setTimer: bigBreakTimer })
       this.myInterval = setInterval(() => {
         if(this.state.count === 0) {
           // ding alarm
@@ -95,12 +96,34 @@ class Timer extends Component {
   }
 
   stopTimer = () => {
-    const {workTimer} = this.props
-    this.setState({
-      count: workTimer
-    })
+    const {counting, setTimer} = this.state
+    if(!counting) {
+      return
+    }
     this.pauseTimer()
+
+    this.setState({count: setTimer})
+
   }
+
+  skipTimer = () => {
+    const {workTimer, breakTimer, bigBreakTimer} = this.props
+    const {workTime, count, setTimer, breakTime, bigBreakTime} = this.state
+
+    if(workTime) {
+      this.setState({count: 5, setTimer: 5, workTime: false, breakTime: true})
+      this.pauseTimer()
+    }
+    else if (breakTime) {
+      this.setState({count: bigBreakTimer, setTimer: bigBreakTimer, breakTime: false, bigBreakTime: true })
+      this.pauseTimer()
+    }
+    else if (bigBreakTime) {
+      this.setState({count: workTimer, setTimer: workTimer, bigBreakTime: false, workTime: true })
+      this.pauseTimer()
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.myInterval);
     this.setState({counting: false})
