@@ -12,10 +12,11 @@ class Timer extends Component {
 
 
   render() {
-    const {count} = this.state
+    const {count, workTime} = this.state
     return (
       <div>
-        <h1 className="counter">Current Count: {count}</h1>
+        <h1 className="counter">{count}</h1>
+        <p className="workPlayIcon"> { workTime ? <i class="fas fa-briefcase"></i> : <i class="fas fa-coffee"></i>} </p>
         <button className="play actionBtn" onClick={this.startTimer}><i class="fas fa-play"></i></button>
         <button className="pause actionBtn" onClick={this.pauseTimer}><i class="fas fa-pause"></i></button>
         <button className="stop actionBtn" onClick={this.stopTimer}><i class="fas fa-stop"></i></button>

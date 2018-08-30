@@ -5,7 +5,13 @@
 }
 
 .counter {
-  margin: 100px auto;
+  margin: 100px auto 20px auto;
+  font-size: 4em;
+}
+
+.workPlayIcon {
+  font-size: 2em;
+  margin-bottom: 80px;
 }
 
 .actionBtn {
