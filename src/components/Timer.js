@@ -18,26 +18,32 @@ class Timer extends Component {
   render() {
     const {count, counting, workTime, progressBarCountdown} = this.state
     return (
-      <div>
+      <div className="timerContainer">
         <p className="workPlayIcon"> { workTime ? <i className="fas fa-briefcase"/> : <i className="fas fa-coffee"/>} </p>
-        <Circle className="circleProgress" percent={progressBarCountdown} strokeWidth="4" strokeColor="salmon" />
+        <Circle
+          className="circleProgress"
+          percent={progressBarCountdown}
+          strokeWidth="4"
+          strokeColor="salmon"
+        />
         <h1 className="counter">{count}</h1>
-
-        <button className="skip actionBtn" onClick={this.skipTimer}><i className="fas fa-step-forward"/></button>
-        {
-          counting ?
-          <button
-            className="play actionBtn"
-            onClick={this.pauseTimer}>
-            <i className="fas fa-pause"/>
-          </button>
-            : <button
-                className="play actionBtn"
-                onClick={this.startTimer}>
-                <i className="fas fa-play"/>
-              </button>
-        }
-        <button className="stop actionBtn" onClick={this.stopTimer}><i className="fas fa-stop"/></button>
+        <div className="actionBtnContainer">
+          <button className="skip actionBtn" onClick={this.skipTimer}><i className="fas fa-step-forward"/></button>
+          {
+            counting ?
+            <button
+              className="play actionBtn"
+              onClick={this.pauseTimer}>
+              <i className="fas fa-pause"/>
+            </button>
+              : <button
+                  className="play actionBtn"
+                  onClick={this.startTimer}>
+                  <i className="fas fa-play"/>
+                </button>
+          }
+          <button className="stop actionBtn" onClick={this.stopTimer}><i className="fas fa-stop"/></button>
+        </div>
       </div>
     );
   }
