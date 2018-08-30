@@ -56,6 +56,8 @@ class Timer extends Component {
 
   }
 
+  // TODO: I have to fix the way startTimer interacts with pauseTimer
+    // as of right now when I press play after pausing, the timer resets back to what is set inside the if conditions below 
 
   startTimer = () => {
     const {workTimer, breakTimer, bigBreakTimer} = this.props
