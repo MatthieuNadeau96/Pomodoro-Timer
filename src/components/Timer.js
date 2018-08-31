@@ -10,7 +10,7 @@ class Timer extends Component {
     mode: 'WORK',
     progressBarCountdown: 100,
     time: {},
-    seconds: 30
+    seconds: this.props.workTimer
   }
 
   secondsToTime = (secs) => {
@@ -41,21 +41,6 @@ class Timer extends Component {
   resetDisplay = () => {
     let timeLeftVar = this.secondsToTime(this.state.seconds);
     this.setState({ time: timeLeftVar });
-  }
-
-  startTimeTime = () => {
-    this.myInterval = setInterval(this.countDown, 1000);
-  }
-
-  countDown = () => {
-    let seconds = this.state.seconds - 1;
-    this.setState({
-      time: this.secondsToTime(seconds),
-      seconds: seconds,
-    });
-    if (seconds === 0) {
-      clearInterval(this.myInterval);
-    }
   }
 
   render() {
@@ -91,7 +76,6 @@ class Timer extends Component {
       </div>
     );
   }
-
 
   // TODO: I have to fix the way startTimer interacts with pauseTimer
     // as of right now when I press play after pausing, the timer resets back to what is set inside the if conditions below
@@ -135,21 +119,6 @@ class Timer extends Component {
 
     this.timerCountDown()
   }
-
-  convertSeconds = (totalSeconds) => {
-    let seconds = totalSeconds % 60;
-    let minutes = Math.floor(totalSeconds * 60);
-
-    if (seconds < 10) {
-      seconds = '0' + seconds;
-    }
-
-    if (minutes < 10) {
-      minutes = '0' + minutes;
-    }
-    return minutes + ':' + seconds;
-  }
-
 
   pauseTimer = () => {
     clearInterval(this.myInterval);
