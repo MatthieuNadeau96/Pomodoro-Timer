@@ -9,17 +9,21 @@
 
 .timerContainer {
   height: 100%;
+  position: relative;
 }
 
 .circleProgress {
-  height: 400px;
-  width: 400px;
+  max-height: 500px;
+  max-width: 60%;
   margin: 40px auto;
   z-index: 1;
 }
 
 .counter {
-  margin: 40px auto 40px auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -130%);
   font-size: 4em;
 }
 
