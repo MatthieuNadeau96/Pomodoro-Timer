@@ -10,7 +10,7 @@ class Timer extends Component {
     mode: 'WORK',
     progressBarCountdown: 100,
     time: {},
-    seconds: 70
+    seconds: 30
   }
 
   secondsToTime = (secs) => {
@@ -35,6 +35,10 @@ class Timer extends Component {
   }
 
   componentDidMount = () => {
+    this.resetDisplay();
+  }
+
+  resetDisplay = () => {
     let timeLeftVar = this.secondsToTime(this.state.seconds);
     this.setState({ time: timeLeftVar });
   }
@@ -93,6 +97,8 @@ class Timer extends Component {
     // as of right now when I press play after pausing, the timer resets back to what is set inside the if conditions below
 
   countDown = () => {
+    const { workTimer, breakTimer, bigBreakTimer } = this.props
+    const { mode } = this.state;
     let seconds = this.state.seconds - 1;
     this.setState({
       time: this.secondsToTime(seconds),
@@ -100,8 +106,11 @@ class Timer extends Component {
     });
     if (seconds === 0) {
       // ding alarm
-      this.setState({ mode: 'BREAK', progressBarCountdown: 100 })
       this.pauseTimer();
+      if (mode === 'WORK') { this.setState({ mode: 'BREAK', seconds: breakTimer, progressBarCountdown: 100 }) }
+      if (mode === 'BREAK') { this.setState({ mode: 'BIGBREAK', seconds: bigBreakTimer, progressBarCountdown: 100 }) }
+      if (mode === 'BIGBREAK') { this.setState({ mode: 'WORK', seconds: workTimer, progressBarCountdown: 100 }) }
+      this.resetDisplay();
     }
   }
 
