@@ -1,22 +1,62 @@
 import React, { Component } from 'react';
 
-import { Circle } from 'rc-progress'
+import { Circle } from 'rc-progress';
 
 class Timer extends Component {
 
   state = {
-    count: 25,
     counting: false,
     setTimer: undefined,
-    workTime: true,
-    breakTime: false,
-    bigBreakTime: false,
-    progressBarCountdown: 100
+    mode: 'WORK',
+    progressBarCountdown: 100,
+    time: {},
+    seconds: 70
   }
 
+  secondsToTime = (secs) => {
+    let hours = Math.floor(secs / (60 * 60));
+
+    let divisor_for_minutes = secs % (60 * 60);
+    let minutes = Math.floor(divisor_for_minutes / 60);
+
+    let divisor_for_seconds = divisor_for_minutes % 60;
+    let seconds = Math.ceil(divisor_for_seconds);
+
+    if (seconds < 10) {
+      seconds = '0' + seconds;
+    }
+
+    let obj = {
+      "h": hours,
+      "m": minutes,
+      "s": seconds
+    };
+    return obj;
+  }
+
+  componentDidMount = () => {
+    let timeLeftVar = this.secondsToTime(this.state.seconds);
+    this.setState({ time: timeLeftVar });
+  }
+
+  startTimeTime = () => {
+    this.myInterval = setInterval(this.countDown, 1000);
+  }
+
+  countDown = () => {
+    let seconds = this.state.seconds - 1;
+    this.setState({
+      time: this.secondsToTime(seconds),
+      seconds: seconds,
+    });
+    if (seconds === 0) {
+      clearInterval(this.myInterval);
+    }
+  }
 
   render() {
     const {count, counting, workTime, progressBarCountdown} = this.state
+
     return (
       <div className="timerContainer">
         <p className="workPlayIcon"> { workTime ? <i className="fas fa-briefcase"/> : <i className="fas fa-coffee"/>} </p>
@@ -26,7 +66,7 @@ class Timer extends Component {
           strokeWidth="4"
           strokeColor="salmon"
         />
-        <h1 className="counter">{count}</h1>
+      <h1 className="counter">{this.state.time.m}:{this.state.time.s}</h1>
         <div className="actionBtnContainer">
           <button className="skip actionBtn" onClick={this.skipTimer}><i className="fas fa-step-forward"/></button>
           {
@@ -48,73 +88,59 @@ class Timer extends Component {
     );
   }
 
-  timerCountDown = () => {
-    const { count } = this.state
-    this.progress = setInterval(() => {
-      if (count <= 0) {
-        clearInterval(this.progress);
-      }
-      this.setState( prevState => ({
-        progressBarCountdown: prevState.progressBarCountdown - 1
-      }))
-    }, 1000 / (100 / count));
-
-  }
 
   // TODO: I have to fix the way startTimer interacts with pauseTimer
     // as of right now when I press play after pausing, the timer resets back to what is set inside the if conditions below
 
+  countDown = () => {
+    let seconds = this.state.seconds - 1;
+    this.setState({
+      time: this.secondsToTime(seconds),
+      seconds: seconds,
+    });
+    if (seconds === 0) {
+      // ding alarm
+      this.setState({ mode: 'BREAK', progressBarCountdown: 100 })
+      this.pauseTimer();
+    }
+  }
+
   startTimer = () => {
-    const {workTimer, breakTimer, bigBreakTimer} = this.props
-    const {workTime, breakTime, bigBreakTime} = this.state
+    const { workTimer, breakTimer, bigBreakTimer } = this.props
+    const { mode } = this.state
 
     this.setState({counting: true})
 
-    if(workTime) {
-      this.setState({ count: workTimer, setTimer: workTimer })
-      this.myInterval = setInterval(() => {
-        if(this.state.count === 0) {
-          // ding alarm
-          this.pauseTimer();
-          this.setState({breakTime: true, workTime: false, count: breakTimer, progressBarCountdown: 100 })
-        } else {
-          this.setState( prevState => ({
-            count: prevState.count - 1
-          }))
-        }
-      }, 1000)
+    if(mode === 'WORK') {
+      this.setState({ seconds: workTimer, setTimer: workTimer })
+      this.myInterval = setInterval(this.countDown, 1000);
     }
-    else if (breakTime) {
-      this.setState({ count: breakTimer, setTimer: breakTimer })
-      this.myInterval = setInterval(() => {
-        if(this.state.count === 0) {
-          // ding alarm
-          this.pauseTimer();
-          this.setState({breakTime: false, bigBreakTime: true, count: bigBreakTimer, progressBarCountdown: 100 })
-        } else {
-          this.setState( prevState => ({
-            count: prevState.count - 1
-          }))
-        }
-      }, 1000)
+    if (mode === 'BREAK') {
+      this.setState({ seconds: breakTimer, setTimer: breakTimer })
+      this.myInterval = setInterval(this.countDown, 1000);
     }
-    else if (bigBreakTime) {
-      this.setState({ count: bigBreakTimer, setTimer: bigBreakTimer })
-      this.myInterval = setInterval(() => {
-        if(this.state.count === 0) {
-          // ding alarm
-          this.pauseTimer();
-          this.setState({bigBreakTime: false, workTime: true, count: workTimer, progressBarCountdown: 100 })
-        } else {
-          this.setState( prevState => ({
-            count: prevState.count - 1
-          }))
-        }
-      }, 1000)
+    else if (mode === 'BIGBREAK') {
+      this.setState({ seconds: bigBreakTimer, setTimer: bigBreakTimer })
+      this.myInterval = setInterval(this.countDown, 1000);
     }
 
     this.timerCountDown()
   }
+
+  convertSeconds = (totalSeconds) => {
+    let seconds = totalSeconds % 60;
+    let minutes = Math.floor(totalSeconds * 60);
+
+    if (seconds < 10) {
+      seconds = '0' + seconds;
+    }
+
+    if (minutes < 10) {
+      minutes = '0' + minutes;
+    }
+    return minutes + ':' + seconds;
+  }
+
 
   pauseTimer = () => {
     clearInterval(this.myInterval);
@@ -151,6 +177,19 @@ class Timer extends Component {
       this.setState({count: workTimer, setTimer: workTimer, bigBreakTime: false, workTime: true, progressBarCountdown: 100 })
       this.pauseTimer()
     }
+  }
+
+  timerCountDown = () => {
+    const { seconds } = this.state
+    this.progress = setInterval(() => {
+      if (seconds <= 0) {
+        clearInterval(this.progress);
+      }
+      this.setState( prevState => ({
+        progressBarCountdown: prevState.progressBarCountdown - 1
+      }))
+    }, 1000 / (100 / seconds));
+
   }
 
   componentWillUnmount() {
