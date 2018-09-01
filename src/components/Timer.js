@@ -6,7 +6,6 @@ class Timer extends Component {
 
   state = {
     counting: false,
-    setTimer: undefined,
     mode: 'WORK',
     progressBarCountdown: 100,
     time: {},
@@ -128,12 +127,25 @@ class Timer extends Component {
   }
 
   stopTimer = () => {
-    const {counting, setTimer} = this.state
+    const { workTimer, breakTimer, bigBreakTimer } = this.props
+    const { counting, mode } = this.state
     if(!counting) {
       return
     }
     this.pauseTimer()
-    this.setState({count: setTimer, progressBarCountdown: 100})
+    if(mode === 'WORK') {
+    this.resetDisplay(workTimer)
+    this.setState({seconds: workTimer})
+    }
+    if (mode === 'BREAK') {
+    this.resetDisplay(breakTimer)
+    this.setState({seconds: breakTimer})
+    }
+    else if (mode === 'BIGBREAK') {
+    this.resetDisplay(bigBreakTimer)
+    this.setState({seconds: bigBreakTimer})
+    }
+    this.setState({progressBarCountdown: 100})
   }
 
   skipTimer = () => {
