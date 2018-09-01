@@ -10,7 +10,7 @@ class Timer extends Component {
     mode: 'WORK',
     progressBarCountdown: 100,
     time: {},
-    seconds: this.props.workTimer
+    seconds: 26
   }
 
   secondsToTime = (secs) => {
@@ -35,20 +35,20 @@ class Timer extends Component {
   }
 
   componentDidMount = () => {
-    this.resetDisplay();
+    this.resetDisplay(this.props.workTimer);
   }
 
-  resetDisplay = () => {
-    let timeLeftVar = this.secondsToTime(this.state.seconds);
+  resetDisplay = (secs) => {
+    let timeLeftVar = this.secondsToTime(secs);
     this.setState({ time: timeLeftVar });
   }
 
   render() {
-    const {count, counting, workTime, progressBarCountdown} = this.state
+    const {count, counting, progressBarCountdown, mode} = this.state
 
     return (
       <div className="timerContainer">
-        <p className="workPlayIcon"> { workTime ? <i className="fas fa-briefcase"/> : <i className="fas fa-coffee"/>} </p>
+        <p className="workPlayIcon"> { mode === 'WORK' ? <i className="fas fa-briefcase"/> : <i className="fas fa-coffee"/>} </p>
         <Circle
           className="circleProgress"
           percent={progressBarCountdown}
@@ -90,10 +90,10 @@ class Timer extends Component {
     });
     if (seconds === 0) {
       // ding alarm
-      this.pauseTimer();
       if (mode === 'WORK') { this.setState({ mode: 'BREAK', seconds: breakTimer, progressBarCountdown: 100 }) }
       if (mode === 'BREAK') { this.setState({ mode: 'BIGBREAK', seconds: bigBreakTimer, progressBarCountdown: 100 }) }
       if (mode === 'BIGBREAK') { this.setState({ mode: 'WORK', seconds: workTimer, progressBarCountdown: 100 }) }
+      this.pauseTimer();
       this.resetDisplay();
     }
   }
@@ -123,9 +123,7 @@ class Timer extends Component {
   pauseTimer = () => {
     clearInterval(this.myInterval);
     clearInterval(this.progress);
-    this.setState( prevState => ({
-      counting: false
-    }))
+    this.setState({ counting: false })
   }
 
   stopTimer = () => {
@@ -140,21 +138,31 @@ class Timer extends Component {
   }
 
   skipTimer = () => {
-    const {workTimer, bigBreakTimer} = this.props
-    const {workTime, breakTime, bigBreakTime} = this.state
+    const {workTimer, breakTimer, bigBreakTimer} = this.props
+    const { mode } = this.state
+    console.log(mode)
+    console.log(this.state.seconds)
 
-    if(workTime) {
-      this.setState({count: 5, setTimer: 5, workTime: false, breakTime: true, progressBarCountdown: 100 })
-      this.pauseTimer()
+
+    if (mode === 'WORK') {
+      this.setState({ mode: 'BREAK', seconds: breakTimer, progressBarCountdown: 100 })
+      console.log(mode)
+      console.log(this.state.seconds)
+      this.resetDisplay(breakTimer);
     }
-    else if (breakTime) {
-      this.setState({count: bigBreakTimer, setTimer: bigBreakTimer, breakTime: false, bigBreakTime: true, progressBarCountdown: 100 })
-      this.pauseTimer()
+    if (mode === 'BREAK') {
+      this.setState({ mode: 'BIGBREAK', seconds: bigBreakTimer, progressBarCountdown: 100 })
+      console.log(mode)
+      console.log(this.state.seconds)
+      this.resetDisplay(bigBreakTimer);
     }
-    else if (bigBreakTime) {
-      this.setState({count: workTimer, setTimer: workTimer, bigBreakTime: false, workTime: true, progressBarCountdown: 100 })
-      this.pauseTimer()
+    if (mode === 'BIGBREAK') {
+      this.setState({ mode: 'WORK', seconds: workTimer, progressBarCountdown: 100 })
+      console.log(mode)
+      console.log(this.state.seconds)
+      this.resetDisplay(workTimer);
     }
+
   }
 
   timerCountDown = () => {
