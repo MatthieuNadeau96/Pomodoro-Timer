@@ -37,22 +37,38 @@
   border-radius: 100%;
   cursor: pointer;
   border: none;
-  text-shadow: -4px -4px 18px rgba(0, 0, 0, 0.28);
   box-shadow: inset -3px -3px 20px rgba(0, 0, 0, 0.33);
   margin: 0 10px;
   background-color: salmon;
   color: white;
   font-size: 1.5em;
   transition: 100ms ease-out;
+  -webkit-tap-highlight-color: transparent;
 }
 .actionBtn:hover {
   color: #eee;
 }
 .actionBtn:active {
   color: #ddd;
-  text-shadow: inset 4px 4px 18px rgba(0, 0, 0, 0.28);
   box-shadow: inset 3px 3px 20px rgba(0, 0, 0, 0.33);
 }
 .actionBtn:focus {
   outline: 0;
+}
+
+
+@media (max-width: 600px) {
+  .counter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -125%);
+    font-size: 3.2em;
+  }
+
+  .actionBtn {
+    padding: 1.1em;
+    margin: 0 10px;
+    font-size: 1em;
+  }
 }
