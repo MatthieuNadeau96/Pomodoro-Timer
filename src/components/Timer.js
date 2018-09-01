@@ -9,7 +9,7 @@ class Timer extends Component {
     mode: 'WORK',
     progressBarCountdown: 100,
     time: {},
-    seconds: 26
+    seconds: this.props.workTimer
   }
 
   render() {
