@@ -90,11 +90,19 @@ class Timer extends Component {
     });
     if (seconds === 0) {
       // ding alarm
-      if (mode === 'WORK') { this.setState({ mode: 'BREAK', seconds: breakTimer, progressBarCountdown: 100 }) }
-      if (mode === 'BREAK') { this.setState({ mode: 'BIGBREAK', seconds: bigBreakTimer, progressBarCountdown: 100 }) }
-      if (mode === 'BIGBREAK') { this.setState({ mode: 'WORK', seconds: workTimer, progressBarCountdown: 100 }) }
+      if (mode === 'WORK') {
+        this.setState({ mode: 'BREAK', seconds: breakTimer, progressBarCountdown: 100 })
+        this.resetDisplay(breakTimer);
+      }
+      if (mode === 'BREAK') {
+        this.setState({ mode: 'BIGBREAK', seconds: bigBreakTimer, progressBarCountdown: 100 })
+        this.resetDisplay(bigBreakTimer);
+      }
+      if (mode === 'BIGBREAK') {
+        this.setState({ mode: 'WORK', seconds: workTimer, progressBarCountdown: 100 })
+        this.resetDisplay(workTimer);
+      }
       this.pauseTimer();
-      this.resetDisplay();
     }
   }
 
@@ -105,15 +113,12 @@ class Timer extends Component {
     this.setState({counting: true})
 
     if(mode === 'WORK') {
-      this.setState({ seconds: workTimer, setTimer: workTimer })
       this.myInterval = setInterval(this.countDown, 1000);
     }
     if (mode === 'BREAK') {
-      this.setState({ seconds: breakTimer, setTimer: breakTimer })
       this.myInterval = setInterval(this.countDown, 1000);
     }
     else if (mode === 'BIGBREAK') {
-      this.setState({ seconds: bigBreakTimer, setTimer: bigBreakTimer })
       this.myInterval = setInterval(this.countDown, 1000);
     }
 
