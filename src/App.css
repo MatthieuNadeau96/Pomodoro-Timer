@@ -20,20 +20,26 @@
   z-index: 1;
 }
 
-.counter {
+.counterContainer {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -135%);
-  font-size: 4em;
-  color: #d67e73;
+  transform: translate(-49%, -100%);
 }
 
 .workPlayIcon {
   font-size: 2em;
   margin: 0px;
+  margin-bottom: 20px;
   color: #2d2d2d;
 }
+
+.counter {
+  font-size: 4em;
+  color: #d67e73;
+  margin: 0;
+}
+
 
 .actionBtn {
   padding: 1.1em;
@@ -61,12 +67,20 @@
 
 
 @media (max-width: 600px) {
-  .counter {
+  .counterContainer {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -125%);
-    font-size: 3.2em;
+    transform: translate(-50%, -110%);
+  }
+
+  .workPlayIcon {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+  }
+
+  .counter {
+    font-size: 2.2em;
   }
 
   .actionBtn {

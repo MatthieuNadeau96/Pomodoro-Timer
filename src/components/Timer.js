@@ -17,14 +17,16 @@ class Timer extends Component {
 
     return (
       <div className="timerContainer">
-        <p className="workPlayIcon"> { mode === 'WORK' ? <i className="fas fa-briefcase"/> : <i className="fas fa-coffee"/>} </p>
         <Circle
           className="circleProgress"
           percent={progressBarCountdown}
           strokeWidth="4"
-          strokeColor="salmon"
+          strokeColor="#d67e73"
         />
-      <h1 className="counter">{this.state.time.m}:{this.state.time.s}</h1>
+        <div className="counterContainer">
+          <p className="workPlayIcon"> { mode === 'WORK' ? <i className="fas fa-briefcase"/> : <i className="fas fa-coffee"/>} </p>
+          <h1 className="counter">{this.state.time.m}:{this.state.time.s}</h1>
+        </div>
         <div className="actionBtnContainer">
           <button className="skip actionBtn" onClick={this.skipTimer}><i className="fas fa-step-forward"/></button>
           {
