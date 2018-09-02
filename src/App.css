@@ -29,13 +29,12 @@
 
 .workPlayIcon {
   font-size: 2em;
-  margin: 0px;
-  margin-bottom: 20px;
-  color: #2d2d2d;
+  margin: 30px 0 65px 0;
+  color: #d67e73;
 }
 
 .counter {
-  font-size: 4em;
+  font-size: 4.5em;
   color: #d67e73;
   margin: 0;
 }
@@ -46,8 +45,8 @@
   border-radius: 100%;
   cursor: pointer;
   border: none;
-  box-shadow: -2px -3px 12px rgba(0, 0, 0, 0.05), inset -1px -7px 2px rgba(0, 0, 0, 0.06);;
-  margin: 0 10px;
+  box-shadow: -2px -3px 12px rgba(0, 0, 0, 0.05), inset -1px -7px 2px rgba(0, 0, 0, 0.06);
+  margin: 0 20px;
   background-color: #d67e73;
   color: white;
   font-size: 1.5em;
@@ -75,8 +74,8 @@
   }
 
   .workPlayIcon {
+    margin-bottom: 25px;
     font-size: 1.3em;
-    margin-bottom: 10px;
   }
 
   .counter {
@@ -84,8 +83,6 @@
   }
 
   .actionBtn {
-    padding: 1.1em;
-    margin: 0 10px;
-    font-size: 1em;
+    font-size: 1.2em;
   }
 }
