@@ -16,7 +16,7 @@
 .circleProgress {
   max-height: 500px;
   max-width: 60%;
-  margin: 40px auto;
+  margin: 0 auto;
   z-index: 1;
 }
 
@@ -48,7 +48,7 @@
   cursor: pointer;
   border: none;
   box-shadow: -2px -3px 12px rgba(0, 0, 0, 0.05), inset -1px -7px 2px rgba(0, 0, 0, 0.06);
-  margin: 0 20px;
+  margin: 20px 20px 0 20px;
   background-color: #d67e73;
   color: white;
   font-size: 1.5em;
@@ -66,13 +66,39 @@
   outline: 0;
 }
 
+.workCountContainer {
+  text-align: right;
+  margin-right: 25px;
+}
+
+.dot {
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  margin: 0px 10px;
+  border-radius: 100%;
+  background-color: #d67e73;
+}
 
 @media (max-width: 600px) {
+
+  .workCountContainer {
+    text-align: center;
+    margin-right: 0px;
+    margin-bottom: 30px;
+  }
+
+  .dot {
+    height: 15px;
+    width: 15px;
+    margin: 0px 5px;
+  }
+
   .counterContainer {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -108%);
+    transform: translate(-50%, -96%);
   }
 
   .workPlayIcon {
@@ -85,6 +111,14 @@
   }
 
   .actionBtn {
+    font-size: 1.2em;
+  }
+}
+
+
+@media (max-width: 340px) {
+  .actionBtn {
+    margin: 20px 0 0 0;
     font-size: 1.2em;
   }
 }

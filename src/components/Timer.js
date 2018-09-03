@@ -5,11 +5,13 @@ import { Circle } from 'rc-progress';
 class Timer extends Component {
 
   state = {
+    seconds: this.props.workTimer,
+    time: {},
     counting: false,
     mode: 'WORK',
     progressBarCountdown: 100,
-    time: {},
-    seconds: this.props.workTimer
+    workCount: 0,
+    workCountTotal: 4
   }
 
   render() {
@@ -17,6 +19,12 @@ class Timer extends Component {
 
     return (
       <div className="timerContainer">
+        <div className="workCountContainer">
+          <div className="dot"/>
+          <div className="dot"/>
+          <div className="dot"/>
+          <div className="dot"/>
+        </div>
         <Circle
           className="circleProgress"
           percent={progressBarCountdown}
@@ -81,7 +89,7 @@ class Timer extends Component {
 
   countDown = () => {
     const { workTimer, breakTimer, bigBreakTimer } = this.props
-    const { mode } = this.state;
+    const { mode, workCount, workCountTotal } = this.state;
     let seconds = this.state.seconds - 1;
     this.setState({
       time: this.secondsToTime(seconds),
@@ -90,15 +98,19 @@ class Timer extends Component {
     if (seconds === 0) {
       // ding alarm
       if (mode === 'WORK') {
-        this.setState({ mode: 'BREAK', seconds: breakTimer, progressBarCountdown: 100 })
+        this.setState({ mode: 'BREAK', seconds: breakTimer, progressBarCountdown: 100, workCount: workCount + 1 })
         this.resetDisplay(breakTimer);
       }
-      if (mode === 'BREAK') {
+      if (mode === 'BREAK' && workCount < workCountTotal) {
+        this.setState({ mode: 'WORK', seconds: workTimer, progressBarCountdown: 100 })
+        this.resetDisplay(workTimer);
+      }
+      if (mode === 'BREAK' && workCount === workCountTotal) {
         this.setState({ mode: 'BIGBREAK', seconds: bigBreakTimer, progressBarCountdown: 100 })
         this.resetDisplay(bigBreakTimer);
       }
       if (mode === 'BIGBREAK') {
-        this.setState({ mode: 'WORK', seconds: workTimer, progressBarCountdown: 100 })
+        this.setState({ mode: 'WORK', seconds: workTimer, progressBarCountdown: 100, workCount: 0 })
         this.resetDisplay(workTimer);
       }
       this.pauseTimer();
