@@ -15,15 +15,15 @@ class Timer extends Component {
   }
 
   render() {
-    const {counting, progressBarCountdown, mode} = this.state
+    const {counting, progressBarCountdown, mode, workCount} = this.state
 
     return (
       <div className="timerContainer">
         <div className="workCountContainer">
-          <div className="dot"/>
-          <div className="dot"/>
-          <div className="dot"/>
-          <div className="dot"/>
+          <div className={ workCount >= 1 ? "dot coloredDot" : "dot"}/>
+          <div className={ workCount >= 2 ? "dot coloredDot" : "dot"}/>
+          <div className={ workCount >= 3 ? "dot coloredDot" : "dot"}/>
+          <div className={ workCount >= 4 ? "dot coloredDot" : "dot"}/>
         </div>
         <Circle
           className="circleProgress"

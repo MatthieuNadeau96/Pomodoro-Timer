@@ -77,6 +77,10 @@
   display: inline-block;
   margin: 0px 10px;
   border-radius: 100%;
+  background-color: #d3d3d3;
+}
+
+.coloredDot {
   background-color: #d67e73;
 }
 
